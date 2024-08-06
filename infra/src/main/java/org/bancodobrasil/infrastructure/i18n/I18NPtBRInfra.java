@@ -10,4 +10,9 @@ public class I18NPtBRInfra implements I18nInfra {
     public String cardPayment() {
         return "Card Payment";
     }
+
+    @Override
+    public String messageInternalErrorException(String message) {
+        return String.format("An error has occurred: %s", message);
+    }
 }

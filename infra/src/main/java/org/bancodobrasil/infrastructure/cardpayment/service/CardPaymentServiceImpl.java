@@ -12,6 +12,7 @@ import org.bancodobrasil.infrastructure.exception.DataNotFoundException;
 import org.bancodobrasil.infrastructure.i18n.I18nFactoryInfra;
 import org.bancodobrasil.infrastructure.i18n.I18nInfra;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -27,11 +28,11 @@ public class CardPaymentServiceImpl implements CardPaymentService {
     @Override
     public CardPaymentDomain findById(UUID id) throws Exception {
         I18nInfra i18n = I18nFactoryInfra.get();
-        CardPayment cardPayment = cardPaymentRepository.findById(id);
-        if(cardPayment == null) {
+        Optional<CardPayment> cardPayment = cardPaymentRepository.findByIdOptional(id);
+        if(cardPayment.isEmpty()) {
             throw new DataNotFoundException(i18n, i18n.cardPayment());
         }
-        return cardPaymentMapper.toDomain(cardPayment);
+        return cardPaymentMapper.toDomain(cardPayment.get());
     }
 
     @Override

@@ -10,7 +10,6 @@ import org.bancodobrasil.core.cardpayment.usecase.FindCardPaymentByIdUseCase;
 import org.bancodobrasil.infrastructure.cardpayment.dto.CardPaymentDTO;
 import org.bancodobrasil.infrastructure.cardpayment.dto.CardPaymentPayloadDTO;
 import org.bancodobrasil.infrastructure.cardpayment.mapper.CardPaymentMapper;
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
