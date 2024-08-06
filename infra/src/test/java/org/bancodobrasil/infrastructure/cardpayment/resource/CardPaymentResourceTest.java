@@ -27,59 +27,27 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doReturn;
 
 @QuarkusTest
 @TestHTTPEndpoint(CardPaymentResource.class)
+@Transactional
 class CardPaymentResourceTest {
     protected static final String TEST_VALID_CARD_NUMBER = "5107032614583346";
     protected static final String TEST_LAST_FOUR_DIGITS = "3346";
+    protected static final String TEST_EXISTING_ID = "7c8fb3b2-6a4e-42a8-8056-f9d5bae85251";
 
     @BeforeEach
     void setUp() {}
 
     @AfterEach
-    @Transactional
     void tearDown() {
         CardPaymentRepository cardPaymentRepository = new CardPaymentRepository();
         cardPaymentRepository.deleteAll();
     }
-/*
-    @Test
-    void shouldGetCardPayment() throws Exception {
-        UUID uuid = UUID.fromString("7c8fb3b2-6a4e-42a8-8056-f9d5bae85251");
-        doReturn(createMockCardPaymentOutput())
-                .when(findCardPaymentByIdUseCase)
-                .execute(uuid);
-
-        given().when()
-                .get(uuid.toString())
-                .then()
-                .statusCode(200)
-                .body("id", is("7c8fb3b2-6a4e-42a8-8056-f9d5bae85251"));
-
-    }
-
-    @Test
-    void shouldCreateCardPayment() throws Exception {
-
-        doReturn(createMockCardPaymentOutput())
-                .when(createCardPaymentUseCase)
-                .execute(Mockito.any());
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(createMockCardPaymentPayload())
-                .when()
-                    .post()
-                .then()
-                    .statusCode(200)
-                .body("id", is("7c8fb3b2-6a4e-42a8-8056-f9d5bae85251"));
-    }*/
 
     @Test
     void shouldGetCardPayment() {
-        UUID uuid = UUID.fromString("7c8fb3b2-6a4e-42a8-8056-f9d5bae85251");
+        UUID uuid = UUID.fromString(TEST_EXISTING_ID);
 
         CardPaymentDTO dto = given().when()
                 .get(uuid.toString())
@@ -90,6 +58,14 @@ class CardPaymentResourceTest {
 
         assertNotNull(dto);
         assertEquals(dto.getId(), uuid);
+    }
+
+    @Test
+    void shouldReturnNotFoundGetCardPayment() {
+        given().when()
+                .get("0bad7a91-5769-463f-86a8-b245120e33ec")
+                .then()
+                .statusCode(404);
     }
 
     @Test
@@ -108,22 +84,6 @@ class CardPaymentResourceTest {
         assertNotNull(dto.getId());
         assertNotNull(dto.getCard());
         assertEquals(dto.getCard().getLastFourDigits(), TEST_LAST_FOUR_DIGITS);
-    }
-
-    CardPaymentDomain createMockCardPaymentOutput() {
-        CardPaymentDomain cardPayment = new CardPaymentDomain();
-        cardPayment.setId(UUID.fromString("7c8fb3b2-6a4e-42a8-8056-f9d5bae85251"));
-        cardPayment.setValue(BigDecimal.valueOf(23.40));
-        cardPayment.setInstallments(1);
-
-        CardDomain card = new CardDomain();
-        card.setCardHolderName("BRUNO D P ASSIS");
-        card.setLastFourDigits(TEST_LAST_FOUR_DIGITS);
-        card.setExpirationMonth(1);
-        card.setExpirationYear(2029);
-        cardPayment.setCard(card);
-
-        return cardPayment;
     }
 
     CardPaymentPayloadDTO createMockCardPaymentPayload(String cardNumber) {

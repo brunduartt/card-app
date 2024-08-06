@@ -1,9 +1,6 @@
 package org.bancodobrasil.infrastructure.cardpayment.config;
 
-import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Dependent;
-import jakarta.ws.rs.Produces;
 import org.bancodobrasil.core.cardpayment.ports.CardPaymentService;
 import org.bancodobrasil.core.cardpayment.usecase.CreateCardPaymentUseCase;
 import org.bancodobrasil.core.cardpayment.usecase.CreateCardPaymentUseCaseImpl;

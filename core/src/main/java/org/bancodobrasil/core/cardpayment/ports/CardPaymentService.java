@@ -12,12 +12,10 @@ public interface CardPaymentService {
      * @throws Exception CardPayment not found
      */
     CardPaymentDomain findById(UUID id) throws Exception;
-
     /**
      * Creates a new CardPayment and returns it
      * @param domain CardPayment to be created
-     * @return new CardPaymentDomain with id
-     * @throws Exception
+     * @return new CardPaymentDomain with assigned id
      */
-    CardPaymentDomain create(CardPaymentDomain domain) throws Exception;
+    CardPaymentDomain create(CardPaymentDomain domain);
 }

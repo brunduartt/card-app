@@ -5,6 +5,9 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.bancodobrasil.core.cardpayment.entity.CardDomain;
 import org.bancodobrasil.core.cardpayment.entity.CardPaymentDomain;
 import org.bancodobrasil.core.cardpayment.exception.FieldNotValidException;
+import org.bancodobrasil.core.cardpayment.exception.FieldRequiredException;
+import org.bancodobrasil.core.cardpayment.i18n.I18n;
+import org.bancodobrasil.core.cardpayment.i18n.I18nFactory;
 import org.bancodobrasil.core.cardpayment.ports.CardPaymentService;
 import org.bancodobrasil.core.cardpayment.utils.ValidationUtils;
 
@@ -19,60 +22,67 @@ public class CreateCardPaymentUseCaseImpl implements CreateCardPaymentUseCase {
 
     @Override
     public CardPaymentDomain execute(CardPaymentDomain domain) throws Exception {
-        this.validateFields(domain);
+        I18n i18n = I18nFactory.get();
+        this.validateFields(i18n, domain);
         return service.create(domain);
     }
 
-    private void validateFields(CardPaymentDomain cardPaymentDomain) throws Exception {
+    private void validateFields(I18n i18n, CardPaymentDomain cardPaymentDomain) throws Exception {
         if(cardPaymentDomain.getValue() == null) {
-            throw new FieldNotValidException("Payment value required");
+            throw new FieldRequiredException(i18n, CardPaymentDomain.Fields.value);
         }
         if(cardPaymentDomain.getValue().compareTo(BigDecimal.ZERO) < 1) {
-            throw new FieldNotValidException("Payment value cannot be 0 or negative");
+            throw new FieldNotValidException(i18n, CardPaymentDomain.Fields.value, i18n.messageMustBePositive());
+        }
+        if(cardPaymentDomain.getInstallments() == null) {
+            throw new FieldRequiredException(i18n, CardPaymentDomain.Fields.installments);
         }
         if(cardPaymentDomain.getInstallments() < 1) {
-            throw new FieldNotValidException("Installments cannot be 0 or negative");
+            throw new FieldNotValidException(i18n, CardPaymentDomain.Fields.installments, i18n.messageMustBePositive());
         }
         if(cardPaymentDomain.getCard() == null) {
-            throw new FieldNotValidException("Card data required");
+            throw new FieldRequiredException(i18n, CardPaymentDomain.Fields.card);
         }
 
-        validateCardFields(cardPaymentDomain.getCard());
+        validateCardFields(i18n, cardPaymentDomain.getCard());
 
     }
 
-    private void validateCardFields(CardDomain cardDomain) throws Exception {
+    private void validateCardFields(I18n i18n, CardDomain cardDomain) throws Exception {
         if(StringUtils.isBlank(cardDomain.getCardHolderName())) {
-            throw new FieldNotValidException("Card holder name required.");
+            throw new FieldRequiredException(i18n, CardDomain.Fields.cardHolderName);
         }
         if(StringUtils.isBlank(cardDomain.getCardNumber())) {
-            throw new FieldNotValidException("Card number required.");
+            throw new FieldRequiredException(i18n, CardDomain.Fields.cardNumber);
         }
         if(!ValidationUtils.isCreditCardNumberValid(cardDomain.getCardNumber())){
-            throw new FieldNotValidException("Card number invalid.");
+            throw new FieldNotValidException(i18n, CardDomain.Fields.cardNumber);
         }
-        if(cardDomain.getExpirationYear() == null) {
-            throw new FieldNotValidException("Card expiration year required.");
-        }
-        if(cardDomain.getExpirationYear() < 1) {
-            throw new FieldNotValidException("Card expiration year cannot be 0 or negative.");
-        }
-        if(cardDomain.getExpirationMonth() == null) {
-            throw new FieldNotValidException("Card expiration month required.");
-        }
-        if(cardDomain.getExpirationMonth() < 1) {
-            throw new FieldNotValidException("Card expiration month cannot be 0 or negative.");
-        }
-        validateExpirationDate(cardDomain.getExpirationMonth(), cardDomain.getExpirationYear());
+        validateExpirationDate(i18n, cardDomain.getExpirationMonth(), cardDomain.getExpirationYear());
     }
 
-    private void validateExpirationDate(int month, int year) throws Exception {
+    private void validateExpirationDate(I18n i18n, Integer month, Integer year) throws Exception {
+        if(month == null) {
+            throw new FieldRequiredException(i18n, CardDomain.Fields.expirationMonth);
+        }
+        if(month < 1 || month > 12) {
+            throw new FieldNotValidException(i18n, CardDomain.Fields.expirationMonth, i18n.messageMustBeBetween(1, 12));
+        }
+
+        if(year == null) {
+            throw new FieldRequiredException(i18n, CardDomain.Fields.expirationYear);
+        }
+        YearMonth now = YearMonth.now();
+        if(year < now.getYear() || year > 9999) {
+            throw new FieldNotValidException(i18n, CardDomain.Fields.expirationYear);
+        }
+
         YearMonth expirationDate = YearMonth.parse(
                 String.format("%02d",month) + "/"+ year ,
                 DateTimeFormatter.ofPattern( "MM/uuuu" )
         );
-        if(expirationDate.isBefore(YearMonth.now())) {
-            throw new FieldNotValidException("Card expired.");
+        if(expirationDate.isBefore(now)) {
+            throw new FieldNotValidException(i18n, CardPaymentDomain.Fields.card, i18n.messageCardExpired());
         }
     }
 }

@@ -1,13 +1,14 @@
 package org.bancodobrasil.core.cardpayment.entity;
 
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@FieldNameConstants
 public class CardDomain {
+
     String cardNumber;
     String lastFourDigits;
     String cardHolderName;

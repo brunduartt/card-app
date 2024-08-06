@@ -3,7 +3,6 @@ package org.bancodobrasil.infrastructure.cardpayment.persistence;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;

@@ -8,6 +8,9 @@ import org.bancodobrasil.core.cardpayment.ports.CardPaymentService;
 import org.bancodobrasil.infrastructure.cardpayment.mapper.CardPaymentMapper;
 import org.bancodobrasil.infrastructure.cardpayment.persistence.CardPayment;
 import org.bancodobrasil.infrastructure.cardpayment.persistence.CardPaymentRepository;
+import org.bancodobrasil.infrastructure.exception.DataNotFoundException;
+import org.bancodobrasil.infrastructure.i18n.I18nFactoryInfra;
+import org.bancodobrasil.infrastructure.i18n.I18nInfra;
 
 import java.util.UUID;
 
@@ -23,9 +26,10 @@ public class CardPaymentServiceImpl implements CardPaymentService {
 
     @Override
     public CardPaymentDomain findById(UUID id) throws Exception {
+        I18nInfra i18n = I18nFactoryInfra.get();
         CardPayment cardPayment = cardPaymentRepository.findById(id);
         if(cardPayment == null) {
-            throw new Exception("CardPayment not found");
+            throw new DataNotFoundException(i18n, i18n.cardPayment());
         }
         return cardPaymentMapper.toDomain(cardPayment);
     }

@@ -6,13 +6,19 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class CardPaymentPayloadDTO {
+    @NotNull
+    @Positive
     BigDecimal value;
+
+    @NotNull
+    @Min(1)
     Integer installments;
+
+    @NotNull
     CardPayloadDTO card;
 }
