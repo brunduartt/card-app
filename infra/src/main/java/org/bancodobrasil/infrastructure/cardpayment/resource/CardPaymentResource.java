@@ -10,12 +10,15 @@ import org.bancodobrasil.core.cardpayment.usecase.FindCardPaymentByIdUseCase;
 import org.bancodobrasil.infrastructure.cardpayment.dto.CardPaymentDTO;
 import org.bancodobrasil.infrastructure.cardpayment.dto.CardPaymentPayloadDTO;
 import org.bancodobrasil.infrastructure.cardpayment.mapper.CardPaymentMapper;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.UUID;
 
 @Path("/card-payment")
 public class CardPaymentResource {
+
+    private static final Logger LOG = Logger.getLogger(CardPaymentResource.class);
 
     @Inject
     FindCardPaymentByIdUseCase findCardPaymentByIdUseCase;
