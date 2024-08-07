@@ -7,6 +7,9 @@ import org.bancodobrasil.core.cardpayment.usecase.CreateCardPaymentUseCaseImpl;
 import org.bancodobrasil.core.cardpayment.usecase.FindCardPaymentByIdUseCase;
 import org.bancodobrasil.core.cardpayment.usecase.FindCardPaymentByIdUseCaseImpl;
 
+/**
+ * Card Payment usecase beans configuration
+ */
 public class CardPaymentConfig {
 
     @ApplicationScoped

@@ -55,7 +55,7 @@ public class CreateCardPaymentUseCaseImpl implements CreateCardPaymentUseCase {
         if(StringUtils.isBlank(cardDomain.getCardNumber())) {
             throw new FieldRequiredException(i18n, CardDomain.Fields.cardNumber);
         }
-        if(!ValidationUtils.isCreditCardNumberValid(cardDomain.getCardNumber())){
+        if(!ValidationUtils.isCreditCardNumberValid(cardDomain.getCardNumber())) {
             throw new FieldNotValidException(i18n, CardDomain.Fields.cardNumber);
         }
         validateExpirationDate(i18n, cardDomain.getExpirationMonth(), cardDomain.getExpirationYear());

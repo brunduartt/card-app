@@ -1,5 +1,8 @@
 package org.bancodobrasil.core.cardpayment.i18n;
 
+/**
+ * I18n interface for each language implementation
+ */
 public interface I18n {
 
     String messageMustBePositive();

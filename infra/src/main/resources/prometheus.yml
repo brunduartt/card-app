@@ -7,7 +7,8 @@ scrape_configs:
           - prometheus:9090
 
   - job_name: quarkus-micrometer
-    metrics_path: /q/metrics
+    metrics_path: /api/q/metrics
     scrape_interval: 3s
     static_configs:
-      - targets: [ 'HOST:8080' ]
+      - targets:
+        - card-app:8080

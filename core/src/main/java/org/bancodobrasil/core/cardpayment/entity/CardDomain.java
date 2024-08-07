@@ -8,10 +8,10 @@ import lombok.experimental.FieldNameConstants;
 @NoArgsConstructor
 @FieldNameConstants
 public class CardDomain {
-
     String cardNumber;
     String lastFourDigits;
     String cardHolderName;
     Integer expirationMonth;
     Integer expirationYear;
+    String cvc;
 }

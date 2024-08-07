@@ -1,6 +1,11 @@
 package org.bancodobrasil.core.cardpayment.utils;
 
 public class ValidationUtils {
+    /**
+     * Validates if card number is valid
+     * @param cc Credit card number
+     * @return true if valid and false if not valid
+     */
     public static boolean isCreditCardNumberValid(String cc) {
         if (! cc.matches("(?=[456]|37)[0-9]{13,16}"))
             return false;

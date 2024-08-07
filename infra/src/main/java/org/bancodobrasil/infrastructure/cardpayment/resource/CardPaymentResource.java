@@ -12,6 +12,7 @@ import org.bancodobrasil.infrastructure.cardpayment.dto.CardPaymentPayloadDTO;
 import org.bancodobrasil.infrastructure.cardpayment.mapper.CardPaymentMapper;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -48,7 +49,7 @@ public class CardPaymentResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse<CardPaymentDTO> getCardPayment(@Parameter(required = true, description = "CardPayment id")
-                                                           @PathParam("id") UUID id) throws Exception {
+                                                           @PathParam("id") @NotNull UUID id) throws Exception {
         return RestResponse.ok(mapper.toDTO(findCardPaymentByIdUseCase.execute(id)));
     }
 
@@ -64,8 +65,7 @@ public class CardPaymentResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse<CardPaymentDTO> createCardPayment(@Parameter(required = true)
-                                                              @Valid @NotNull CardPaymentPayloadDTO payload) throws Exception {
+    public RestResponse<CardPaymentDTO> createCardPayment(@RequestBody(required = true) @Valid @NotNull CardPaymentPayloadDTO payload) throws Exception {
         return RestResponse.ok(mapper.toDTO(createCardPaymentUseCase.execute(mapper.toDomain(payload))));
     }
 }
