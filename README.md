@@ -12,7 +12,8 @@ The project was organized following Clean architecture principles, with 2 module
 - **Core:** Everything related to business logic, like usecases and domain representations.
 - **Infra:** All implementation logic, like database, services, exception handling and configurations.
 ## Prometheus
-Prometheus can be accessed on the port 9090
+The server metrics can be accessed through /api/q/metrics.
+Prometheus UI can be accessed on the port 9090 when running docker-compose.
 
 ### Custom metric implementation
 #### errors.internal-error-exception
@@ -20,7 +21,7 @@ Increments each time the system returns unexpected exception.
 Defined in ExceptionMapper class.
 
 ## Docker
-The application can be built for deployment using docker-compose. In this case, the following environment variables are supplied to the card-app service:
+The application can be built using docker-compose. In this case, the following environment variables are supplied to the card-app service:
 
 - DB_HOST: Postgres service container name
 - DB_NAME: Database name defined in the postgres service
