@@ -1,6 +1,5 @@
 package org.bancodobrasil.infrastructure.exception;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.core.Response;
@@ -35,20 +34,14 @@ public class ExceptionMappers {
     @ServerExceptionMapper(value = ClientErrorException.class)
     public RestResponse<Exception> handleInternalErrorException(ClientErrorException e) throws Exception {
         log.error(e);
-        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, new InternalErrorException(getI18n(), e.getMessage()));
+        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, new InternalErrorException(I18nFactoryInfra.getDefault(), e.getMessage()));
     }
 
     @ServerExceptionMapper
     public RestResponse<Exception> handleInternalErrorException(Exception e) throws Exception {
         log.error(e);
         registry.counter("errors.internal-error-exception").increment();
-        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, new InternalErrorException(getI18n(), e.getMessage()));
-    }
-
-
-
-    I18nInfra getI18n() {
-        return I18nFactoryInfra.get();
+        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, new InternalErrorException(I18nFactoryInfra.getDefault(), e.getMessage()));
     }
 
 }

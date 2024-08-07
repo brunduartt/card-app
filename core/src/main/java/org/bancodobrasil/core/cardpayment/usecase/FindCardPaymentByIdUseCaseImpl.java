@@ -16,7 +16,7 @@ public class FindCardPaymentByIdUseCaseImpl implements FindCardPaymentByIdUseCas
 
     @Override
     public CardPaymentDomain execute(UUID id) throws Exception {
-        I18n i18n = I18nFactory.get();
+        I18n i18n = I18nFactory.getDefault();
         if(id == null) {
             throw new FieldRequiredException(i18n, CardPaymentDomain.Fields.id);
         }

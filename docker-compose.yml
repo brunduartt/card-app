@@ -1,0 +1,44 @@
+services:
+  card-app-db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - cardappnet
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sa
+      POSTGRES_DB: cardapp
+
+  card-app:
+    image: 'quarkus/card-app-jvm:latest'
+    ports:
+      - "8080:8080"
+    build:
+      context: infra
+      dockerfile: Dockerfile.jvm
+    depends_on:
+      - card-app-db
+    networks:
+      - cardappnet
+    environment:
+      - DB_HOST=card-app-db
+      - DB_NAME=cardapp
+      - DB_USER=postgres
+      - DB_PWD=sa
+
+  prometheus:
+    image: 'prom/prometheus'
+    volumes:
+      - "./infra/src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - cardappnet
+    ports:
+      - "9090:9090"
+
+
+
+networks:
+  cardappnet:
+    driver: bridge

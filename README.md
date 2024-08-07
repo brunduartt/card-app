@@ -4,6 +4,65 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
+## CardApp
+The app starts on the port 8080 and has the /api/ prefix.
+
+### Create Card Payment
+POST _/api/card-payment/_
+
+Body:
+```json
+{
+  "installments": 1,
+  "card": {
+    "cardNumber": "5324228786540745",
+    "cardHolderName": "Teste",
+    "expirationMonth": 8,
+    "expirationYear": 2024
+  },
+  "value": 1
+}
+```
+Return:
+```json
+{
+  "id": "02cad906-e412-4d7c-a3e5-df8649a3502a",
+  "value": 1.00,
+  "installments": 1,
+  "card": {
+    "lastFourDigits": "0745",
+    "cardHolderName": "Teste",
+    "expirationMonth": 8,
+    "expirationYear": 2024
+  }
+}
+```
+### Get Card Payment
+GET _/api/card-payment/02cad906-e412-4d7c-a3e5-df8649a3502a_
+
+Response:
+```json
+{
+  "id": "02cad906-e412-4d7c-a3e5-df8649a3502a",
+  "value": 1.00,
+  "installments": 1,
+  "card": {
+    "lastFourDigits": "0745",
+    "cardHolderName": "Teste",
+    "expirationMonth": 8,
+    "expirationYear": 2024
+  }
+}
+```
+
+## Prometheus
+Prometheus can be accessed on the port 9090
+
+### Custom metric implementation
+#### errors.internal-error-exception
+Increments each time the system returns a not handled exception.
+Defined in ExceptionMapper class.
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -34,6 +93,22 @@ If you want to build an _über-jar_, execute the following command:
 ```
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+
+## Running the App
+### Package the application
+
+```shell script
+./mvnw package
+```
+### Docker
+Build the docker images by running:
+```shell scriptd
+./docker-compose build
+```
+Then, run the docker compose:
+```shell scriptd
+./docker-compose up -d
+```
 
 ## Creating a native executable
 

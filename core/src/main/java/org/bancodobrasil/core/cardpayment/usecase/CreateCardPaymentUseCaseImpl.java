@@ -22,7 +22,7 @@ public class CreateCardPaymentUseCaseImpl implements CreateCardPaymentUseCase {
 
     @Override
     public CardPaymentDomain execute(CardPaymentDomain domain) throws Exception {
-        I18n i18n = I18nFactory.get();
+        I18n i18n = I18nFactory.getDefault();
         this.validateFields(i18n, domain);
         return service.create(domain);
     }

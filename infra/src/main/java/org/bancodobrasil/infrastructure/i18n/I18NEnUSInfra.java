@@ -1,18 +1,18 @@
 package org.bancodobrasil.infrastructure.i18n;
 
-public class I18NPtBRInfra implements I18nInfra {
+public class I18NEnUSInfra implements I18nInfra {
     @Override
     public String messageDataNotFound(String entity) {
-        return String.format("Não encontrado: %s.", entity);
+        return String.format("Not found: %s.", entity);
     }
 
     @Override
     public String cardPayment() {
-        return "Pagamento (Cartão)";
+        return "Card Payment";
     }
 
     @Override
     public String messageInternalErrorException(String message) {
-        return String.format("Ocorreu um erro: %s", message);
+        return String.format("An error has occurred: %s", message);
     }
 }

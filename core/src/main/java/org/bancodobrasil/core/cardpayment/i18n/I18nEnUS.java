@@ -1,28 +1,28 @@
 package org.bancodobrasil.core.cardpayment.i18n;
 
-public class I18nPtBR implements I18n {
+public class I18nEnUS implements I18n {
     @Override
     public String messageMustBePositive() {
-        return String.format("Deve ser positivo");
+        return String.format("Must be positive");
     }
 
     @Override
     public String messageFieldRequired(String field) {
-        return String.format("Campo obrigatório: %s.", field);
+        return String.format("Field required: %s.", field);
     }
 
     @Override
     public String messageFieldInvalid(String field, String message) {
-        return String.format("Campo inválido: %s. %s", field, message);
+        return String.format("Field invalid: %s. %s", field, message);
     }
 
     @Override
     public String messageMustBeBetween(int min, int max) {
-        return String.format("Deve estar entre %d e %d", min, max);
+        return String.format("Must be between %d and %d", min, max);
     }
 
     @Override
     public String messageCardExpired() {
-        return "Cartão vencido";
+        return "Card expired";
     }
 }
